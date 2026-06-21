@@ -28,6 +28,7 @@ public class Tokenizador {
                 continue;
             }
 
+
             if (Character.isDigit(c)) {
                 int inicio = i;
                 while (i < n && (Character.isDigit(expresion.charAt(i)) || expresion.charAt(i) == '.')) {
@@ -37,18 +38,22 @@ public class Tokenizador {
                 continue;
             }
 
+
             if (Character.isLetter(c) || c == '_') {
                 int inicio = i;
                 while (i < n && (Character.isLetterOrDigit(expresion.charAt(i)) || expresion.charAt(i) == '_')) {
                     i++;
                 }
+
                 tokens.add(expresion.substring(inicio, i));
                 continue;
             }
 
+
             throw new IllegalArgumentException(
                     "Caracter no reconocido '" + c + "' en la posicion " + i);
         }
+
 
         return tokens;
     }
@@ -61,7 +66,4 @@ public class Tokenizador {
         return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/");
     }
 
-    public static boolean esVariable(String token) {
-        return !esNumero(token) && !esOperador(token) && !token.equals("(") && !token.equals(")");
-    }
 }

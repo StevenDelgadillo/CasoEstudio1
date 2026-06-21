@@ -1,5 +1,4 @@
 import pilaDinamica.PilaDinamica;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,6 +7,9 @@ import java.util.Scanner;
  * Analisis de expresiones aritmeticas: validacion de parentesis balanceados
  * usando una pila dinamica.
  */
+
+
+
 public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
@@ -21,39 +23,48 @@ public class Main {
         menu();
     }
 
+
+
     private static void menu() {
+
         int opcion;
+
         do {
+
             System.out.println("\n========= MENU =========");
             System.out.println("1. Ingresar expresion");
-            System.out.println("2. Validar parentesis");
-            System.out.println("3. Salir");
+            System.out.println("2. Salir");
             System.out.print("Seleccione una opcion: ");
 
             opcion = leerEntero();
 
             switch (opcion) {
                 case 1 -> ingresarExpresion();
-                case 2 -> validarParentesis();
-                case 3 -> System.out.println("Saliendo del programa.");
+                case 2 -> System.out.println("Saliendo del programa. Hasta pronto!");
                 default -> System.out.println("Opcion invalida. Intente de nuevo.");
             }
-        } while (opcion != 3);
+        } while (opcion != 2);
     }
 
     // Opciones del menu
+
+
 
     private static void ingresarExpresion() {
         System.out.println("Ingrese la expresion:");
         expresionActual = sc.nextLine();
         validarParentesis();
+
     }
+
 
     private static void validarParentesis() {
         if (expresionActual == null) {
             System.out.println("Primero debe ingresar una expresion (opcion 1).");
             return;
         }
+
+
 
         ArrayList<String> tokens;
         try {
@@ -62,6 +73,9 @@ public class Main {
             System.out.println("Error al analizar la expresion: " + e.getMessage());
             return;
         }
+
+
+
 
         System.out.println("Tokens encontrados:");
         for (String token : tokens) {
@@ -79,7 +93,15 @@ public class Main {
             }
         }
 
-        System.out.println("\nValidando parentesis con la pila dinamica");
+
+
+        if (!contieneParentesis(tokens)) {
+            System.out.println();
+            System.out.println("Resultado: no se encontraron parentesis.");
+            return;
+        }
+
+
         boolean balanceada = validarConPila(tokens);
 
         System.out.println();
@@ -90,27 +112,41 @@ public class Main {
         }
     }
 
-    //Logica de validacion con la pila
+    // validacion con la pila
+
+    // esto confirma si hay al meno un parentesis
+    private static boolean contieneParentesis(ArrayList<String> tokens) {
+        for (String token : tokens) {
+            if (token.equals("(") || token.equals(")")) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Valida los parentesis usando la pila dinamica. Por cada '(' se hace
      * push, y por cada ')' se hace pop. Se lleva un contador propio porque
      * estaVacia() es privado en la clase dada (tal como se definio en clase)
      */
+
     private static boolean validarConPila(ArrayList<String> tokens) {
         PilaDinamica pila = new PilaDinamica();
         int contador = 0;
+
 
         for (String token : tokens) {
             if (token.equals("(")) {
                 pila.push("(");
                 contador++;
                 System.out.println("push(\"(\")");
+
             } else if (token.equals(")")) {
                 if (contador == 0) {
                     System.out.println("Se encontro un ')' sin un '(' que le corresponda.");
                     return false;
                 }
+
                 pila.pop();
                 contador--;
                 System.out.println("pop()  ->  \")\" cierra correctamente");
@@ -123,7 +159,10 @@ public class Main {
         return contador == 0;
     }
 
-    // Recursos
+
+
+    // adecuaciones al codigo
+
 
     private static int leerEntero() {
         while (!sc.hasNextInt()) {
@@ -131,7 +170,7 @@ public class Main {
             sc.next();
         }
         int valor = sc.nextInt();
-        sc.nextLine(); // limpiar el salto de linea pendiente
+        sc.nextLine(); // limpia el salto de linea
         return valor;
     }
 }
